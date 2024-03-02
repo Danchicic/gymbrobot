@@ -5,7 +5,7 @@ from aiogram.types import BotCommand
 async def set_main_menu(bot: Bot):
     """
     func to set a menu in telegram
-    handlers to process commands: main_handlers
+    handlers to process commands: commands_handler
     :param bot:
     :return:
     """

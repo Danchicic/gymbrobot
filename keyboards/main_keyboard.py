@@ -8,15 +8,15 @@ class Keyboard:
     """
 
     @staticmethod
-    def create_reply_kb(buttons_names: list[str], width: int = 4) -> ReplyKeyboardMarkup:
+    def create_reply_kb(buttons_text_list: list[str], width: int = 4) -> ReplyKeyboardMarkup:
         """
         creating reply kb from a list of buttons
         :param width: how many buttons in one row
-        :param buttons_names: button names list
+        :param buttons_text_list: button names list
         :rtype: kb object
         """
         builder = ReplyKeyboardBuilder()
-        buttons: list[KeyboardButton] = [KeyboardButton(text=button) for button in buttons_names]
+        buttons: list[KeyboardButton] = [KeyboardButton(text=button) for button in buttons_text_list]
         builder.row(*buttons, width=width)
         return builder.as_markup(resize_keyboard=True, one_time_keyboard=True)
 
@@ -31,7 +31,6 @@ class Keyboard:
         buttons: list[InlineKeyboardButton] = []
         kb_builder = InlineKeyboardBuilder()
         for i in range(len(buttons_text_list)):
-            # print(i)
             buttons.append(
                 InlineKeyboardButton(text=buttons_text_list[i], callback_data=str(buttons_text_list[i]))
             )
