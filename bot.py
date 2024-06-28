@@ -3,6 +3,7 @@ import logging
 from aiogram import Bot, Dispatcher
 import handlers
 from config import config
+from database.base import init_models
 
 # main file of bot
 
@@ -28,9 +29,10 @@ async def main():
 
     dp: Dispatcher = Dispatcher()
     dp.include_router(handlers.router_main)
+
     # set main menu
     # await set_main_menu(bot)
-
+    await init_models()
     await bot.delete_webhook(drop_pending_updates=True)
     await dp.start_polling(bot)
 
