@@ -1,9 +1,12 @@
 import asyncio
 import logging
 from aiogram import Bot, Dispatcher
+from aiogram.client.default import DefaultBotProperties
+
 import handlers
 from config import config
-from database.base import init_models
+from database.base import init_models, get_session, async_session
+from middleware.database_connection import DBMiddleware
 
 # main file of bot
 
@@ -25,10 +28,11 @@ async def main():
     logger.info('Starting bot')
 
     # Инициализируем бот и диспетчер
-    bot: Bot = Bot(token=token)
+    bot: Bot = Bot(token=token, default=DefaultBotProperties(parse_mode='HTML'))
 
     dp: Dispatcher = Dispatcher()
     dp.include_router(handlers.router_main)
+    dp.update.middleware(DBMiddleware())
 
     # set main menu
     # await set_main_menu(bot)

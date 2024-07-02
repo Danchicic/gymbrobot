@@ -1,0 +1,2 @@
+class WrongDayName(Exception):
+    pass

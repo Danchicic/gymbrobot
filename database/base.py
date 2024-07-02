@@ -1,8 +1,8 @@
+from contextlib import asynccontextmanager
 from urllib.parse import quote_plus
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
+from sqlalchemy.orm import declarative_base
+from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine, async_sessionmaker
 from sqlalchemy.orm import sessionmaker
-import aiosqlite
 import os
 from dotenv import load_dotenv
 
@@ -14,11 +14,9 @@ DATABASE_NAME = os.getenv('DATABASE_NAME')
 DATABASE_USERNAME = os.getenv('DATABASE_USERNAME')
 DATABASE_PASSWORD = quote_plus(os.getenv('DATABASE_PASSWORD'))
 
-# DATABASE_URL = f"postgresql+asyncpg://{DATABASE_USERNAME}:{DATABASE_PASSWORD}@{DATABASE_HOST}:{DATABASE_PORT}/{DATABASE_NAME}"
-DATABASE_URL = f"sqlite+aiosqlite://///Users/danya/CodeProject/gymbrobot/database.db"
+DATABASE_URL = f"mysql+aiomysql://root:@localhost:3306/GymBroDB"
 
 engine = create_async_engine(DATABASE_URL, echo=True)
-
 
 Base = declarative_base()
 async_session = sessionmaker(
@@ -35,6 +33,7 @@ async def init_models():
 
 
 # Dependency
+@asynccontextmanager
 async def get_session() -> AsyncSession:
     async with async_session() as session:
         yield session
