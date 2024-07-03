@@ -2,11 +2,14 @@ import asyncio
 import logging
 from aiogram import Bot, Dispatcher
 from aiogram.client.default import DefaultBotProperties
+from sqlalchemy import select
 
 import handlers
 from config import config
 from database.base import init_models, get_session, async_session
+from database.models import Workout
 from middleware.database_connection import DBMiddleware
+from services.scheduler import change_week_scheduler
 
 # main file of bot
 
@@ -33,6 +36,8 @@ async def main():
     dp: Dispatcher = Dispatcher()
     dp.include_router(handlers.router_main)
     dp.update.middleware(DBMiddleware())
+
+    await change_week_scheduler()
 
     # set main menu
     # await set_main_menu(bot)

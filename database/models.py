@@ -1,4 +1,6 @@
-from sqlalchemy import Column, String, Integer, ForeignKey, BigInteger
+import datetime
+
+from sqlalchemy import Column, String, Integer, ForeignKey, BigInteger, DateTime
 from .base import Base
 from sqlalchemy.orm import validates
 
@@ -31,7 +33,10 @@ class Workout(Base):
     user = Column(ForeignKey('user.id', ondelete="CASCADE"))
     day = Column(ForeignKey('days.id', ondelete="CASCADE"))
     exercise = Column(ForeignKey('exercises.id', ondelete="CASCADE"))
-    now_week = Column(Integer)
+    now_workout_week = Column(Integer)
+    global_now_week = Column(Integer, default=datetime.datetime.now().isocalendar()[1])
+    date_create = Column(DateTime, nullable=False, autoincrement=True)
+    date_update = Column(DateTime, nullable=False, autoincrement=True)
 
     @validates("now_week")
     def validate_now_week(self, key, week):

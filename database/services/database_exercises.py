@@ -1,11 +1,13 @@
 import asyncio
+import datetime
 
 from sqlalchemy import select, update, insert
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from database.base import get_session
+from database.base import get_session, init_models, engine
 from exeptions.user_exceptions import WrongDayName
 from database.models import Exercises, Days, User, Workout
+
 from .database_users import get_user_by_telegram_id
 
 
@@ -45,9 +47,13 @@ async def create_user_workout(session: AsyncSession, user_exercises: dict, teleg
                 user=user.id,
                 day=workout_day.id,
                 exercise=exercise.id,
-                now_week=0)
+                now_workout_week=0,
+                date_create=datetime.datetime.now(),
+                date_update=datetime.datetime.now()
+
+            )
             for exercise in exercises
         ]
-        print("wow got them",user_workout_objects)
+        print("wow got them", user_workout_objects)
         session.add_all(user_workout_objects)
         await session.commit()

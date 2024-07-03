@@ -1,5 +1,13 @@
 import asyncio
 
+multipliers = {
+    0: (0.7, "10"),
+    1: (0.75, "8"),
+    2: (0.88, "4-6"),
+    3: (0.93, "2-4"),
+    4: (0.65, "6"),
+}
+
 
 async def unparse_user_workout(workout: str):
     strings = workout.split('\n')
